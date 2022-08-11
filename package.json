@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "An API to serve FluentUI emoji.",
   "main": "index.js",
+  "type": "module",
   "repository": "git@github.com:TomDotBat/fluentui-emoji-api.git",
   "author": "Tom.",
   "license": "MIT"
