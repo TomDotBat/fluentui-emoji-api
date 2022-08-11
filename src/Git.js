@@ -21,7 +21,7 @@
 	SOFTWARE.
 
 	FILE INFORMATION:
-	Name: git.js
+	Name: Git.js
 	Project: FluentUI Emoji API
 	Author: Tom
 	Created: 11th August 2022
