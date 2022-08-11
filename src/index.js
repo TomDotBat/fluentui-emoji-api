@@ -51,7 +51,7 @@ try {
 
 	git.workingDirectory = config.get("CLONE_LOCATION");
 
-	git.fetch();
+	await git.fetch();
 
 	const localCommit = await git.parseRevision("HEAD");
 	const remoteCommit = await git.parseRevision("origin/HEAD");
