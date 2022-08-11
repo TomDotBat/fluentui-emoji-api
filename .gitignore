@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,linux,webstorm+all,visualstudiocode,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,webstorm+all,visualstudiocode,node
 
+fluentui-emoji/
+
 ### Linux ###
 *~
 
