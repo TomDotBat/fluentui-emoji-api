@@ -28,5 +28,6 @@
 */
 
 export default {
-	FLUENTUI_EMOJI_REPO: "https://github.com/microsoft/fluentui-emoji.git"
+	REPOSITORY_URL: "https://github.com/microsoft/fluentui-emoji.git",
+	CLONE_LOCATION: "./fluentui-emoji"
 };
