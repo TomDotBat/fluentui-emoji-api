@@ -1,0 +1,9 @@
+{
+  "name": "fluentui-emoji-api",
+  "version": "1.0.0",
+  "description": "An API to serve FluentUI emoji.",
+  "main": "index.js",
+  "repository": "git@github.com:TomDotBat/fluentui-emoji-api.git",
+  "author": "Tom.",
+  "license": "MIT"
+}
