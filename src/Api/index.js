@@ -29,17 +29,5 @@
 
 import config from "../Config/index.js";
 
-import nanoexpress from 'nanoexpress';
-
 export default function startServer() {
-	const app = nanoexpress();
-	
-	app.setNotFoundHandler((req, res) => {
-		return res.send({
-			code: 404,
-			message: "Resource not found"
-		});
-	});
-
-	app.listen(config.get("LISTEN_PORT"));
 }
