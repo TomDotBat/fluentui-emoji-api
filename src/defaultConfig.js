@@ -29,5 +29,6 @@
 
 export default {
 	REPOSITORY_URL: "https://github.com/microsoft/fluentui-emoji.git",
-	CLONE_LOCATION: "./fluentui-emoji"
+	CLONE_LOCATION: "./fluentui-emoji",
+	AUTO_UPDATE: true
 };
