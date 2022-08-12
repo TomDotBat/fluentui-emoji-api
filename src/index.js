@@ -29,6 +29,7 @@
 
 import config from "./Config/index.js";
 import Updater from "./Updater/index.js";
+import {index} from "./Indexer/index.js";
 
 const autoUpdate = async () => {
 	const updater = await Updater.initialize();
@@ -58,3 +59,5 @@ const autoUpdate = async () => {
 };
 
 await autoUpdate();
+
+await index();
