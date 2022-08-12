@@ -29,5 +29,14 @@
 
 import config from "../Config/index.js";
 
+import express from "express";
+
 export default function startServer() {
+	const app = express();
+
+	const port = config.get("LISTEN_PORT");
+
+	app.listen(port, () => {
+		console.log(`API listening on port ${port}.`);
+	});
 }
