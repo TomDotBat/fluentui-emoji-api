@@ -21,13 +21,13 @@
 	SOFTWARE.
 
 	FILE INFORMATION:
-	Name: Updater.js
+	Name: index.js
 	Project: FluentUI Emoji API
 	Author: Tom
 	Created: 12th August 2022
 */
 
-import config from "./config.js";
+import config from "../Config/index.js";
 import Git from "./Git.js";
 
 import fs from "fs/promises";

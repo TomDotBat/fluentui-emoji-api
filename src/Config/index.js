@@ -21,7 +21,7 @@
 	SOFTWARE.
 
 	FILE INFORMATION:
-	Name: Config.js
+	Name: index.js
 	Project: FluentUI Emoji API
 	Author: Tom
 	Created: 11th August 2022

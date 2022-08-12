@@ -27,8 +27,8 @@
 	Created: 11th August 2022
 */
 
-import config from "./config.js";
-import Updater from "./Updater.js";
+import config from "./Config/index.js";
+import Updater from "./Updater/index.js";
 
 const autoUpdate = async () => {
 	const updater = await Updater.initialize();
