@@ -21,15 +21,25 @@
 	SOFTWARE.
 
 	FILE INFORMATION:
-	Name: defaultConfig.js
+	Name: index.js
 	Project: FluentUI Emoji API
 	Author: Tom
-	Created: 11th August 2022
+	Created: 12th August 2022
 */
 
-export default {
-	REPOSITORY_URL: "https://github.com/microsoft/fluentui-emoji.git",
-	CLONE_LOCATION: "./fluentui-emoji",
-	AUTO_UPDATE: true,
-	LISTEN_PORT: 8000
-};
+import config from "../Config/index.js";
+
+import nanoexpress from 'nanoexpress';
+
+export default function startServer() {
+	const app = nanoexpress();
+	
+	app.setNotFoundHandler((req, res) => {
+		return res.send({
+			code: 404,
+			message: "Resource not found"
+		});
+	});
+
+	app.listen(config.get("LISTEN_PORT"));
+}
