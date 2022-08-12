@@ -35,7 +35,7 @@ const cmd = promisify(exec);
 export default class Git {
 	static async initialize() {
 		const git = new Git();
-		await git.determineVersion();
+		await git._determineVersion();
 		return git;
 	}
 
@@ -72,7 +72,7 @@ export default class Git {
 		await cmd(`git pull ${remote} ${branch}`, this._execOptions);
 	}
 
-	async determineVersion() {
+	async _determineVersion() {
 		try {
 			const {stdout} = await cmd("git --version");
 
