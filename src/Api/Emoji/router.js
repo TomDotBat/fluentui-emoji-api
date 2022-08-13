@@ -27,9 +27,12 @@
 	Created: 12th August 2022
 */
 
+import config from "../../config/index.js";
 import {getEmojiByUnicode} from "../../Indexer/index.js";
+import EmojiStyle from "../../Emoji/EmojiStyle.js";
 
 import express from "express";
+import path from "path";
 
 const emojiRouter = express.Router();
 
@@ -39,6 +42,41 @@ emojiRouter.get("/:unicode", async (req, res) => {
 
 	if (emoji) {
 		res.json(emoji);
+	}
+	else {
+		res.status(404).json({
+			status: 404,
+			message: `Emoji not found with unicode: ${unicode}`
+		});
+	}
+});
+
+const styleFileTypes = {
+	"3D": "png",
+	"COLOR": "svg",
+	"FLAT": "svg",
+	"HIGH_CONTRAST": "svg"
+}
+
+const getEmojiImagePath = (emoji, style) => {
+	const assetsFolder = `${config.get("CLONE_LOCATION")}/assets`;
+	const imageFile = `${emoji.cldr.replace(/\s/g, '_')}_${style.toLowerCase()}.${styleFileTypes[style]}`;
+
+	return `${assetsFolder}/${emoji.folderName}/${EmojiStyle[style]}/${imageFile}`;
+};
+
+emojiRouter.get("/:unicode/image", async (req, res) => {
+	const unicode = req.params.unicode;
+	const emoji = getEmojiByUnicode(unicode);
+
+	if (emoji) {
+		let imagePath = getEmojiImagePath(emoji, EmojiStyle["3D"]);
+
+		if (!path.isAbsolute(imagePath)) {
+			imagePath = process.cwd() + "/" + imagePath;
+		}
+
+		res.sendFile(imagePath);
 	}
 	else {
 		res.status(404).json({
