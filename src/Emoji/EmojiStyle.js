@@ -27,9 +27,11 @@
 	Created: 12th August 2022
 */
 
-export default EmojiStyle = {
+const EmojiStyle = {
 	"3D": "3D",
 	"COLOR": "Color",
 	"FLAT": "Flat",
 	"HIGH_CONTRAST": "High Contrast"
-}
+};
+
+export default EmojiStyle;
