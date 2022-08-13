@@ -28,8 +28,11 @@
 */
 
 export default {
+	LISTEN_PORT: 8000,
+
+	DEFAULT_STYLE: "3D",
+
 	REPOSITORY_URL: "https://github.com/microsoft/fluentui-emoji.git",
 	CLONE_LOCATION: "./fluentui-emoji",
 	AUTO_UPDATE: true,
-	LISTEN_PORT: 8000
 };
