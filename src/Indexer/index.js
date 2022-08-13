@@ -28,7 +28,6 @@
 */
 
 import config from "../config/index.js";
-import Emoji from "../Emoji/index.js";
 import EmojiGroup from "./EmojiGroup.js";
 
 import fs from "fs/promises";
@@ -71,20 +70,22 @@ const addKeywords = (emoji, keywords) => {
 
 		keywordToEmojiList.set(keyword, list);
 	}
-}
+};
+
+const formatUnicode = (unicode) => unicode.replace(/\s/g, '').toLowerCase();
 
 const processEmoji = async (assetsPath, folderName) => {
-	const metadata = JSON.parse(
+	const emoji = JSON.parse(
 		await fs.readFile(`${assetsPath}/${folderName}/metadata.json`, 'utf8')
 	);
 
-	const emoji = Emoji.fromMetadata(metadata);
-
 	emoji.folderName = folderName;
+
 	glyphToEmoji.set(emoji.glyph, emoji);
+	unicodeToEmoji.set(formatUnicode(emoji.unicode), emoji);
+
 	getGroup(emoji.groupName).addEmoji(emoji);
 	addKeywords(emoji, emoji.keywords);
-	unicodeToEmoji.set(emoji.unicode, emoji);
 
 	return emoji;
 };
@@ -132,5 +133,5 @@ export function getEmojiByKeyword(keyword) {
 }
 
 export function getEmojiByUnicode(unicode) {
-	return unicodeToEmoji.get(unicode);
+	return unicodeToEmoji.get(formatUnicode(unicode));
 }
