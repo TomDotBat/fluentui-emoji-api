@@ -21,25 +21,31 @@
 	SOFTWARE.
 
 	FILE INFORMATION:
-	Name: index.js
+	Name: router.js
 	Project: FluentUI Emoji API
 	Author: Tom
 	Created: 12th August 2022
 */
 
-import config from "../Config/index.js";
-import emojiRouter from "./Emoji/router.js";
+import {getEmojiByUnicode} from "../../Indexer/index.js";
 
 import express from "express";
 
-export default function startServer() {
-	const app = express();
+const emojiRouter = express.Router();
 
-	app.use("/emoji", emojiRouter);
+emojiRouter.get("/:unicode", async (req, res) => {
+	const unicode = req.params.unicode;
+	const emoji = getEmojiByUnicode(unicode);
 
-	const port = config.get("LISTEN_PORT");
+	if (emoji) {
+		res.json(emoji);
+	}
+	else {
+		res.status(404).json({
+			status: 404,
+			message: `Emoji not found with unicode: ${unicode}`
+		});
+	}
+});
 
-	app.listen(port, () => {
-		console.log(`API listening on port ${port}.`);
-	});
-}
+export default emojiRouter;
