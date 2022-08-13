@@ -32,6 +32,10 @@ export default {
 
 	DEFAULT_STYLE: "3D",
 
+	DEFAULT_SIZE: 256,
+	MIN_SIZE: 16,
+	MAX_SIZE: 2048,
+
 	REPOSITORY_URL: "https://github.com/microsoft/fluentui-emoji.git",
 	CLONE_LOCATION: "./fluentui-emoji",
 	AUTO_UPDATE: true,

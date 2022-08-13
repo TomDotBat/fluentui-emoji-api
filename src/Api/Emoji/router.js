@@ -33,6 +33,9 @@ import EmojiStyle from "../../Emoji/EmojiStyle.js";
 
 import express from "express";
 import path from "path";
+import fs from "fs/promises";
+import sharp from "sharp";
+import e from "express";
 
 const emojiRouter = express.Router();
 
@@ -51,18 +54,27 @@ emojiRouter.get("/:unicode", async (req, res) => {
 	}
 });
 
+
+const determineEmojiStyle = (style) => (style && EmojiStyle[style.toUpperCase()])
+	? style.toUpperCase() : config.get("DEFAULT_STYLE");
+
 const styleFileTypes = {
 	"3D": "png",
 	"COLOR": "svg",
 	"FLAT": "svg",
 	"HIGH_CONTRAST": "svg"
-}
+};
 
 const getEmojiImagePath = (emoji, style) => {
-	const assetsFolder = `${config.get("CLONE_LOCATION")}/assets`;
+	let assetsPath = `${config.get("CLONE_LOCATION")}/assets`;
+
+	if (!path.isAbsolute(assetsPath)) {
+		assetsPath = process.cwd() + "/" + assetsPath;
+	}
+
 	const imageFile = `${emoji.cldr.replace(/\s/g, '_')}_${style.toLowerCase()}.${styleFileTypes[style]}`;
 
-	return `${assetsFolder}/${emoji.folderName}/${EmojiStyle[style]}/${imageFile}`;
+	return `${assetsPath}/${emoji.folderName}/${EmojiStyle[style]}/${imageFile}`;
 };
 
 emojiRouter.get("/:unicode/image", async (req, res) => {
@@ -70,13 +82,25 @@ emojiRouter.get("/:unicode/image", async (req, res) => {
 	const emoji = getEmojiByUnicode(unicode);
 
 	if (emoji) {
-		let imagePath = getEmojiImagePath(emoji, EmojiStyle["3D"]);
+		const style = determineEmojiStyle(req.query.style);
 
-		if (!path.isAbsolute(imagePath)) {
-			imagePath = process.cwd() + "/" + imagePath;
+		if (styleFileTypes[style] === "svg" && !req.query.png) {
+			res.sendFile(getEmojiImagePath(emoji, style));
 		}
+		else {
+			let size = parseInt(req.query.size) || config.get("DEFAULT_SIZE");
 
-		res.sendFile(imagePath);
+			if (size > config.get("MAX_SIZE") || size <  config.get("MIN_SIZE")) {
+				size = config.get("DEFAULT_SIZE");
+			}
+
+			const image = sharp(await fs.readFile(getEmojiImagePath(emoji, style)))
+				.resize(size, size)
+				.png();
+	
+			res.set("Content-Type", "image/png");
+			res.send(await image.toBuffer());
+		}
 	}
 	else {
 		res.status(404).json({
