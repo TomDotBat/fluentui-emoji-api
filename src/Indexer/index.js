@@ -51,9 +51,10 @@ const getGroup = (name) => {
 
 	if (!(group instanceof EmojiGroup)) {
 		group = new EmojiGroup(name);
+		groups.push(group);
+		groupNameToGroup.set(name, group);
 	}
 
-	groupNameToGroup.set(name, group);
 	return group;
 };
 
@@ -72,13 +73,14 @@ const addKeywords = (emoji, keywords) => {
 	}
 }
 
-const processEmoji = async (folderPath) => {
+const processEmoji = async (assetsPath, folderName) => {
 	const metadata = JSON.parse(
-		await fs.readFile(folderPath + "/metadata.json", 'utf8')
+		await fs.readFile(`${assetsPath}/${folderName}/metadata.json`, 'utf8')
 	);
 
 	const emoji = Emoji.fromMetadata(metadata);
 
+	emoji.folderName = folderName;
 	glyphToEmoji.set(emoji.glyph, emoji);
 	getGroup(emoji.groupName).addEmoji(emoji);
 	addKeywords(emoji, emoji.keywords);
@@ -97,12 +99,11 @@ export async function index() {
 
 	const processes = [];
 
-	for (const folder of folders) {
-		const folderPath = `${assetsPath}/${folder}`;
-		const stat = await fs.stat(folderPath);
+	for (const folderName of folders) {
+		const stat = await fs.stat(`${assetsPath}/${folderName}`);
 
 		if (stat.isDirectory()) {
-			processes.push(processEmoji(folderPath));
+			processes.push(processEmoji(assetsPath, folderName));
 		}
 	}
 
@@ -118,8 +119,8 @@ export function getEmojiGroups() {
 	return groups;
 }
 
-export function getEmojiGroupNames() {
-	return groupNameToGroup.keys();
+export function getEmojiGroupByName(name) {
+	return groupNameToGroup.get(name);
 }
 
 export function getEmojiByGlyph(glyph) {

@@ -69,10 +69,15 @@ export default class Emoji {
 		return !!this._unicodeSkintones;
 	}
 
+	get folderName() {
+		return this._folderName;
+	}
+
 	_cldr;
 	_glyph;
 	_group;
 	_keywords;
 	_unicode;
 	_unicodeSkintones;
+	_folderName;
 }
