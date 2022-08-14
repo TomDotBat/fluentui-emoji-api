@@ -21,19 +21,38 @@
 	SOFTWARE.
 
 	FILE INFORMATION:
-	Name: router.js
+	Name: getMetadata.js
 	Project: FluentUI Emoji API
 	Author: Tom
-	Created: 12th August 2022
+	Created: 14th August 2022
 */
 
-import express from "express";
-import getImage from "./getImage.js";
-import getMetadata from "./getMetadata.js";
+import {getEmojiByGlyph, getEmojiByKeyword, getEmojiByUnicode} from "../../Indexer/index.js";
 
-const emojiRouter = express.Router();
+const searchMethods = {getEmojiByGlyph, getEmojiByKeyword, getEmojiByUnicode};
 
-emojiRouter.get("/:id", getMetadata);
-emojiRouter.get("/:id/image", getImage);
+const getEmojiByIdentifiable = (id) => {
+	let emoji;
 
-export default emojiRouter;
+	for (const method in searchMethods) {
+		emoji = method();
+		if (emoji) return emoji;
+	}
+};
+
+export default async function getMetadata(req, res) {
+	const id = req.params.id;
+
+	const unicode = req.params.unicode;
+	const emoji = getEmojiByUnicode(unicode);
+
+	if (emoji) {
+		res.json(emoji);
+	}
+	else {
+		res.status(404).json({
+			status: 404,
+			message: `Emoji not found with unicode: ${unicode}`
+		});
+	}
+}
