@@ -21,7 +21,7 @@
 	SOFTWARE.
 
 	FILE INFORMATION:
-	Name: getMetadata.js
+	Name: getMetadataByIdentifiable.js
 	Project: FluentUI Emoji API
 	Author: Tom
 	Created: 14th August 2022
@@ -29,7 +29,7 @@
 
 import {getEmojiByIdentifiable} from "../../Indexer/index.js";
 
-export default async function getMetadata(req, res) {
+export default async function getMetadataByIdentifiable(req, res) {
 	const id = req.params.id;
 	const emoji = getEmojiByIdentifiable(id);
 
