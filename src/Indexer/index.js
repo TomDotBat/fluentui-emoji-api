@@ -47,7 +47,7 @@ const clearIndexes = () => {
 };
 
 const getGroup = (name) => {	
-	let group = groupNameToGroup.get(name);
+	let group = groupNameToGroup.get(name.toLowerCase());
 
 	if (!(group instanceof EmojiGroup)) {
 		group = new EmojiGroup(name);
