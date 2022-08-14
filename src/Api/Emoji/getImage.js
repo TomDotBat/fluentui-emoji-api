@@ -36,7 +36,7 @@ import path from "path";
 import fs from "fs/promises";
 import sharp from "sharp";
 
-const determineEmojiStyle = (style) => (style && EmojiStyle[style.toUpperCase()])
+const determineEmojiStyle = (style) => (typeof style === "string" && EmojiStyle[style.toUpperCase()])
 	? style.toUpperCase() : config.get("DEFAULT_STYLE");
 
 const determineEmojiSize = (size) => {
@@ -50,7 +50,7 @@ const determineEmojiSize = (size) => {
 };
 
 const determineEmojiSkinTone = (skinTone, style) => {
-	skinTone = skinTone || config.get("DEFAULT_SKIN_TONE");
+	skinTone = typeof skinTone === "string" ? skinTone : config.get("DEFAULT_SKIN_TONE");
 	skinTone = SkinTone[skinTone.toUpperCase()]
 		? skinTone.toUpperCase()
 		: config.get("DEFAULT_SKIN_TONE");
