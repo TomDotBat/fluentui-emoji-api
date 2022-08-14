@@ -29,6 +29,7 @@
 
 import config from "../Config/index.js";
 import emojiRouter from "./Emoji/router.js";
+import groupsRouter from "./Groups/router.js";
 
 import express from "express";
 
@@ -36,6 +37,7 @@ export default function startServer() {
 	const app = express();
 
 	app.use("/emoji", emojiRouter);
+	app.use("/groups", groupsRouter);
 
 	const port = config.get("LISTEN_PORT");
 
