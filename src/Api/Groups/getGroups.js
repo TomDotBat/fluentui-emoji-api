@@ -27,9 +27,9 @@
 	Created: 14th August 2022
 */
 
-import {getEmojiGroups} from "../../Indexer";
+import {getEmojiGroups} from "../../Indexer/index.js";
 
-export default function getEmojiGroups(req, res) {
+export default function getGroups(req, res) {
 	const groupNames = getEmojiGroups()
 		.map((emojiGroup) => emojiGroup.name);
 

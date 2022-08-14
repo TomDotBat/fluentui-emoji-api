@@ -27,6 +27,8 @@
 	Created: 14th August 2022
 */
 
+import {getEmojiGroupByName} from "../../Indexer/index.js";
+
 export default function getGroupByName(req, res) {
 	const name = req.params.name;
 	const group = getEmojiGroupByName(name);
