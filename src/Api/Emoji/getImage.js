@@ -102,16 +102,16 @@ export default async function getImage(req, res) {
 	if (emoji) {
 		const style = determineEmojiStyle(req.query.style);
 
+		let skinTone;
+		if (!!emoji.unicodeSkintones) {
+			skinTone = determineEmojiSkinTone(req.query.skinTone, style);
+		}
+
 		if (styleFileTypes[style] === "svg" && req.query.png !== "true") {
-			res.sendFile(getEmojiImagePath(emoji, null, style));
+			res.sendFile(getEmojiImagePath(emoji, skinTone, style));
 		}
 		else {
 			const size = determineEmojiSize(req.query.size);
-
-			let skinTone;
-			if (!!emoji.unicodeSkintones) {
-				skinTone = determineEmojiSkinTone(req.query.skinTone, style);
-			}
 
 			const image = sharp(await fs.readFile(getEmojiImagePath(emoji, skinTone, style)))
 				.resize(size, size)
