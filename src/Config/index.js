@@ -37,10 +37,13 @@ class Config {
 	}
 
 	get(key, fallback) {
-		const value = process.env[key] || fallback || defaultConfig[key];
+		let value = process.env[key] || fallback || defaultConfig[key];
 
 		if (value === undefined) {
 			throw new Error(`${key} is not present in the configuration file.`)
+		}
+		else if (value === "false") {
+			value = false;
 		}
 
 		return value;
