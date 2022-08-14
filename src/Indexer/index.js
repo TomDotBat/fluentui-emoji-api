@@ -52,7 +52,7 @@ const getGroup = (name) => {
 	if (!(group instanceof EmojiGroup)) {
 		group = new EmojiGroup(name);
 		groups.push(group);
-		groupNameToGroup.set(name, group);
+		groupNameToGroup.set(name.toLowerCase(), group);
 	}
 
 	return group;

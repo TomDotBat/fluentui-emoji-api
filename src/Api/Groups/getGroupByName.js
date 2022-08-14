@@ -31,7 +31,7 @@ import {getEmojiGroupByName} from "../../Indexer/index.js";
 
 export default function getGroupByName(req, res) {
 	const name = req.params.name;
-	const group = getEmojiGroupByName(name);
+	const group = getEmojiGroupByName(name.toLowerCase());
 
 	if (group) {
 		res.json(group);
