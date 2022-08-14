@@ -50,6 +50,7 @@ const determineEmojiSize = (size) => {
 };
 
 const determineEmojiSkinTone = (skinTone, style) => {
+	skinTone = skinTone || config.get("DEFAULT_SKIN_TONE");
 	skinTone = SkinTone[skinTone.toUpperCase()]
 		? skinTone.toUpperCase()
 		: config.get("DEFAULT_SKIN_TONE");
