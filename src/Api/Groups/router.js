@@ -36,6 +36,5 @@ const groupsRouter = express.Router();
 
 groupsRouter.get("/", getGroups);
 groupsRouter.get("/:name", getGroupByName);
-groupsRouter.get("/keyword/:keyword", getGroupByName);
 
 export default groupsRouter;
