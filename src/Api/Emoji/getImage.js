@@ -85,7 +85,7 @@ const getEmojiImagePath = (emoji, skinTone, style) => {
 		assetsPath = process.cwd() + "/" + assetsPath;
 	}
 
-	let emojiFolder = emoji.folderName;
+	let emojiFolder = emoji.cldr.charAt(0).toUpperCase() + emoji.cldr.slice(1).replace(/:/g, "");
 
 	if (skinTone) {
 		emojiFolder += "/" + SkinTone[skinTone];
@@ -110,7 +110,6 @@ export default async function getImage(req, res) {
 			let skinTone;
 			if (!!emoji.unicodeSkintones) {
 				skinTone = determineEmojiSkinTone(req.query.skinTone, style);
-
 			}
 
 			const image = sharp(await fs.readFile(getEmojiImagePath(emoji, skinTone, style)))

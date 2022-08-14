@@ -80,8 +80,6 @@ const processEmoji = async (assetsPath, folderName) => {
 		await fs.readFile(`${assetsPath}/${folderName}/metadata.json`, 'utf8')
 	);
 
-	emoji.folderName = folderName;
-
 	cldrToEmoji.set(emoji.cldr, emoji);
 	glyphToEmoji.set(emoji.glyph, emoji);
 	unicodeToEmoji.set(formatUnicode(emoji.unicode), emoji);
