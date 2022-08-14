@@ -30,6 +30,7 @@
 import config from "../../config/index.js";
 import {getEmojiByUnicode} from "../../Indexer/index.js";
 import EmojiStyle from "../../Emoji/EmojiStyle.js";
+import SkinTone from "../../Emoji/SkinTone.js";
 
 import express from "express";
 import path from "path";
@@ -56,6 +57,28 @@ emojiRouter.get("/:unicode", async (req, res) => {
 const determineEmojiStyle = (style) => (style && EmojiStyle[style.toUpperCase()])
 	? style.toUpperCase() : config.get("DEFAULT_STYLE");
 
+const determineEmojiSize = (size) => {
+	size = parseInt(size) || config.get("DEFAULT_SIZE");
+
+	if (size > config.get("MAX_SIZE") || size < config.get("MIN_SIZE")) {
+		size = config.get("DEFAULT_SIZE");
+	}
+
+	return size;
+};
+
+const determineEmojiSkinTone = (skinTone, style) => {
+	skinTone = SkinTone[skinTone.toUpperCase()]
+		? skinTone.toUpperCase()
+		: config.get("DEFAULT_SKIN_TONE");
+
+	if (style === "HIGH_CONTRAST") {
+		skinTone = "DEFAULT";
+	}
+
+	return skinTone;
+};
+
 const styleFileTypes = {
 	"3D": "png",
 	"COLOR": "svg",
@@ -63,16 +86,30 @@ const styleFileTypes = {
 	"HIGH_CONTRAST": "svg"
 };
 
-const getEmojiImagePath = (emoji, style) => {
+const getEmojiImageFileName = (emoji, skinTone, style) => {
+	let imageFile = `${emoji.cldr.replace(/\s/g, "_").replace(/:/g, "")}_${style.toLowerCase()}`;
+
+	if (skinTone) {
+		imageFile += "_" + SkinTone[skinTone].toLowerCase();
+	}
+
+	return `${imageFile}.${styleFileTypes[style]}`;
+}
+
+const getEmojiImagePath = (emoji, skinTone, style) => {
 	let assetsPath = `${config.get("CLONE_LOCATION")}/assets`;
 
 	if (!path.isAbsolute(assetsPath)) {
 		assetsPath = process.cwd() + "/" + assetsPath;
 	}
 
-	const imageFile = `${emoji.cldr.replace(/\s/g, '_')}_${style.toLowerCase()}.${styleFileTypes[style]}`;
+	let emojiFolder = emoji.folderName;
 
-	return `${assetsPath}/${emoji.folderName}/${EmojiStyle[style]}/${imageFile}`;
+	if (skinTone) {
+		emojiFolder += "/" + SkinTone[skinTone];
+	}
+
+	return `${assetsPath}/${emojiFolder}/${EmojiStyle[style]}/${getEmojiImageFileName(emoji, skinTone, style)}`;
 };
 
 emojiRouter.get("/:unicode/image", async (req, res) => {
@@ -82,20 +119,22 @@ emojiRouter.get("/:unicode/image", async (req, res) => {
 	if (emoji) {
 		const style = determineEmojiStyle(req.query.style);
 
-		if (styleFileTypes[style] === "svg" && !req.query.png) {
-			res.sendFile(getEmojiImagePath(emoji, style));
+		if (styleFileTypes[style] === "svg" && req.query.png !== "true") {
+			res.sendFile(getEmojiImagePath(emoji, null, style));
 		}
 		else {
-			let size = parseInt(req.query.size) || config.get("DEFAULT_SIZE");
+			const size = determineEmojiSize(req.query.size);
 
-			if (size > config.get("MAX_SIZE") || size < config.get("MIN_SIZE")) {
-				size = config.get("DEFAULT_SIZE");
+			let skinTone;
+			if (!!emoji.unicodeSkintones) {
+				skinTone = determineEmojiSkinTone(req.query.skinTone, style);
+
 			}
 
-			const image = sharp(await fs.readFile(getEmojiImagePath(emoji, style)))
+			const image = sharp(await fs.readFile(getEmojiImagePath(emoji, skinTone, style)))
 				.resize(size, size)
 				.png();
-	
+
 			res.set("Content-Type", "image/png");
 			res.send(await image.toBuffer());
 		}
