@@ -29,11 +29,13 @@
 
 import getImage from "./getImage.js";
 import getMetadata from "./getMetadata.js";
+import getMetadataByKeyword from "./getMetadataByKeyword.js";
 
 import express from "express";
 
 const emojiRouter = express.Router();
 
+emojiRouter.get("/", getMetadataByKeyword)
 emojiRouter.get("/:id", getMetadata);
 emojiRouter.get("/:id/image", getImage);
 
