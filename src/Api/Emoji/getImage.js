@@ -28,7 +28,7 @@
 */
 
 import config from "../../config/index.js";
-import {getEmojiByUnicode} from "../../Indexer/index.js";
+import {getEmojiByIdentifiable} from "../../Indexer/index.js";
 import EmojiStyle from "../../Emoji/EmojiStyle.js";
 import SkinTone from "../../Emoji/SkinTone.js";
 
@@ -95,8 +95,8 @@ const getEmojiImagePath = (emoji, skinTone, style) => {
 };
 
 export default async function getImage(req, res) {
-	const unicode = req.params.unicode;
-	const emoji = getEmojiByUnicode(unicode);
+	const id = req.params.id;
+	const emoji = getEmojiByIdentifiable(id);
 
 	if (emoji) {
 		const style = determineEmojiStyle(req.query.style);
@@ -124,7 +124,7 @@ export default async function getImage(req, res) {
 	else {
 		res.status(404).json({
 			status: 404,
-			message: `Emoji not found with unicode: ${unicode}`
+			message: `Emoji not found with identifiable: ${id}`
 		});
 	}
 }

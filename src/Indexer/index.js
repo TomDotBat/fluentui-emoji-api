@@ -33,12 +33,13 @@ import EmojiGroup from "./EmojiGroup.js";
 import fs from "fs/promises";
 
 let emojiList, groups;
-let glyphToEmoji, groupNameToGroup, keywordToEmojiList, unicodeToEmoji;
+let cldrToEmoji, glyphToEmoji, groupNameToGroup, keywordToEmojiList, unicodeToEmoji;
 
 const clearIndexes = () => {
 	emojiList = [];
 	groups = [];
 
+	cldrToEmoji = new Map();
 	glyphToEmoji = new Map();
 	groupNameToGroup = new Map();
 	keywordToEmojiList = new Map();
@@ -81,6 +82,7 @@ const processEmoji = async (assetsPath, folderName) => {
 
 	emoji.folderName = folderName;
 
+	cldrToEmoji.set(emoji.cldr, emoji);
 	glyphToEmoji.set(emoji.glyph, emoji);
 	unicodeToEmoji.set(formatUnicode(emoji.unicode), emoji);
 
@@ -124,6 +126,10 @@ export function getEmojiGroupByName(name) {
 	return groupNameToGroup.get(name);
 }
 
+export function getEmojiByCldr(glyph) {
+	return cldrToEmoji.get(glyph);
+}
+
 export function getEmojiByGlyph(glyph) {
 	return glyphToEmoji.get(glyph);
 }
@@ -135,3 +141,18 @@ export function getEmojiByKeyword(keyword) {
 export function getEmojiByUnicode(unicode) {
 	return unicodeToEmoji.get(formatUnicode(unicode));
 }
+
+const searchMethods = [getEmojiByCldr, getEmojiByGlyph, getEmojiByKeyword, getEmojiByUnicode];
+
+export function getEmojiByIdentifiable(identifiable) {
+	let emoji;
+
+	for (const method of searchMethods) {
+		emoji = method(identifiable);
+		if (emoji) {
+			break;
+		}
+	}
+
+	return emoji;
+};

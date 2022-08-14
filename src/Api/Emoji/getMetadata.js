@@ -27,24 +27,11 @@
 	Created: 14th August 2022
 */
 
-import {getEmojiByGlyph, getEmojiByKeyword, getEmojiByUnicode} from "../../Indexer/index.js";
-
-const searchMethods = {getEmojiByGlyph, getEmojiByKeyword, getEmojiByUnicode};
-
-const getEmojiByIdentifiable = (id) => {
-	let emoji;
-
-	for (const method in searchMethods) {
-		emoji = method();
-		if (emoji) return emoji;
-	}
-};
+import {getEmojiByIdentifiable} from "../../Indexer/index.js";
 
 export default async function getMetadata(req, res) {
 	const id = req.params.id;
-
-	const unicode = req.params.unicode;
-	const emoji = getEmojiByUnicode(unicode);
+	const emoji = getEmojiByIdentifiable(id);
 
 	if (emoji) {
 		res.json(emoji);
@@ -52,7 +39,7 @@ export default async function getMetadata(req, res) {
 	else {
 		res.status(404).json({
 			status: 404,
-			message: `Emoji not found with unicode: ${unicode}`
+			message: `Emoji not found with identifiable: ${id}`
 		});
 	}
 }
