@@ -27,11 +27,13 @@
 	Created: 12th August 2022
 */
 
-export default SkinTone = {
+const SkinTone = {
 	DEFAULT: "Default",
 	LIGHT: "Light",
 	MEDIUM_LIGHT: "Medium-Light",
 	MEDIUM: "Medium",
 	MEDIUM_DARK: "Medium-Dark",
 	DARK: "Dark"
-}
+};
+
+export default SkinTone;
