@@ -80,6 +80,7 @@ const processEmoji = async (assetsPath, folderName) => {
 		await fs.readFile(`${assetsPath}/${folderName}/metadata.json`, 'utf8')
 	);
 
+	emojiList.push(emoji);
 	cldrToEmoji.set(emoji.cldr, emoji);
 	glyphToEmoji.set(emoji.glyph, emoji);
 	unicodeToEmoji.set(formatUnicode(emoji.unicode), emoji);
@@ -140,7 +141,7 @@ export function getEmojiByUnicode(unicode) {
 	return unicodeToEmoji.get(formatUnicode(unicode));
 }
 
-const searchMethods = [getEmojiByCldr, getEmojiByGlyph, getEmojiByKeyword, getEmojiByUnicode];
+const searchMethods = [getEmojiByCldr, getEmojiByGlyph, getEmojiByUnicode];
 
 export function getEmojiByIdentifiable(identifiable) {
 	let emoji;
