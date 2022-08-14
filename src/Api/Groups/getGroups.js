@@ -29,7 +29,7 @@
 
 import {getEmojiGroups} from "../../Indexer/index.js";
 
-export default function getGroups(req, res) {
+export default async function getGroups(req, res) {
 	const groupNames = getEmojiGroups()
 		.map((emojiGroup) => emojiGroup.name);
 
