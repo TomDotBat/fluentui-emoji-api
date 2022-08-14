@@ -84,7 +84,7 @@ const processEmoji = async (assetsPath, folderName) => {
 	glyphToEmoji.set(emoji.glyph, emoji);
 	unicodeToEmoji.set(formatUnicode(emoji.unicode), emoji);
 
-	getGroup(emoji.groupName).addEmoji(emoji);
+	getGroup(emoji.group).addEmoji(emoji);
 	addKeywords(emoji, emoji.keywords);
 
 	return emoji;
