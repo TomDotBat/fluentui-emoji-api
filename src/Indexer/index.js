@@ -59,7 +59,7 @@ const getGroup = (name) => {
 };
 
 const addKeywords = (emoji, keywords) => {
-	for (const keyword in keywords) {
+	for (const keyword of keywords) {
 		let list = keywordToEmojiList.get(keyword);
 
 		if (Array.isArray(list)) {
