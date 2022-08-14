@@ -35,7 +35,6 @@ import express from "express";
 import path from "path";
 import fs from "fs/promises";
 import sharp from "sharp";
-import e from "express";
 
 const emojiRouter = express.Router();
 
@@ -53,7 +52,6 @@ emojiRouter.get("/:unicode", async (req, res) => {
 		});
 	}
 });
-
 
 const determineEmojiStyle = (style) => (style && EmojiStyle[style.toUpperCase()])
 	? style.toUpperCase() : config.get("DEFAULT_STYLE");
@@ -90,7 +88,7 @@ emojiRouter.get("/:unicode/image", async (req, res) => {
 		else {
 			let size = parseInt(req.query.size) || config.get("DEFAULT_SIZE");
 
-			if (size > config.get("MAX_SIZE") || size <  config.get("MIN_SIZE")) {
+			if (size > config.get("MAX_SIZE") || size < config.get("MIN_SIZE")) {
 				size = config.get("DEFAULT_SIZE");
 			}
 
