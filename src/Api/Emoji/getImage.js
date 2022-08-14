@@ -29,8 +29,8 @@
 
 import config from "../../config/index.js";
 import {getEmojiByIdentifiable} from "../../Indexer/index.js";
-import EmojiStyle from "../../Emoji/EmojiStyle.js";
-import SkinTone from "../../Emoji/SkinTone.js";
+import EmojiStyle from "./EmojiStyle.js";
+import SkinTone from "./SkinTone.js";
 
 import path from "path";
 import fs from "fs/promises";
