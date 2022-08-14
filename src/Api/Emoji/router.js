@@ -27,9 +27,10 @@
 	Created: 12th August 2022
 */
 
-import express from "express";
 import getImage from "./getImage.js";
 import getMetadata from "./getMetadata.js";
+
+import express from "express";
 
 const emojiRouter = express.Router();
 
