@@ -34,7 +34,10 @@ export default function getGroupByName(req, res) {
 	const group = getEmojiGroupByName(name.toLowerCase());
 
 	if (group) {
-		res.json(group);
+		res.json({
+			name: group.name,
+			emoji: group.emoji.map((emoji) => emoji.unicode)
+		});
 	}
 	else {
 		res.status(404).json({
